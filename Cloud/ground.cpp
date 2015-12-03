@@ -2,44 +2,80 @@
 #include "spline.h"
 #include <vector>
 
-Ground::Ground(int count, sf::Vector2u size, const int waterSize) {
+Ground::Ground(int count, sf::Vector2u size, const int waterSize) : ground(sf::TrianglesStrip, count) {
 	double xWidth = 0;
 	double dXWidth = 0;
-	std::vector<double> xArr(5), yArr(5);
+	sf::Color color(102, 60, 30);
+	std::vector<double> xArr(10), yArr(10);
 	tk::spline spl;
-	ground.setPointCount(count);
-	for (int k = 0; k < count - 4; ++k) {
-		if (k % 200 == 0) {
+	int textRepeat = 0;
+	ground[0].position = sf::Vector2f(0, size.y);
+	ground[1].position = sf::Vector2f(0, size.y - 250);
+	//ground[0].texCoords = sf::Vector2f(0, 1024);
+	//ground[1].texCoords = sf::Vector2f(0, 1024 * (size.y - 250) / size.y);
+	ground[0].color = color;
+	ground[1].color = color;
+	for (int k = 2; k < count - 2; k += 2) {
+		if ((k-2) % 200 == 0) {
 			xWidth += std::rand() % 400 + 500 + dXWidth;
-			xArr[0] = xWidth; yArr[0] = -250;
+			dXWidth = 0;
+			xArr[0] = xWidth; yArr[0] = size.y - 250;
 			dXWidth += std::rand() % 50 + 50;
-			xArr[1] = xWidth + dXWidth; yArr[1] = std::rand() % 80 - 210;
+			xArr[1] = xWidth + dXWidth; yArr[1] = size.y + std::rand() % 80 - 210;
 			dXWidth += std::rand() % 50 + 50;
-			xArr[2] = xWidth + dXWidth; yArr[2] = std::rand() % 80 - 210;
+			xArr[2] = xWidth + dXWidth; yArr[2] = size.y + std::rand() % 80 - 210;
 			dXWidth += std::rand() % 50 + 50;
-			xArr[3] = xWidth + dXWidth; yArr[3] = std::rand() % 80 - 210;
+			xArr[3] = xWidth + dXWidth; yArr[3] = size.y + std::rand() % 80 - 210;
 			dXWidth += std::rand() % 50 + 50;
-			xArr[4] = xWidth + dXWidth; yArr[4] = -250;
-			std::cout << k << std::endl;
-
+			xArr[4] = xWidth + dXWidth; yArr[4] = size.y + std::rand() % 80 - 210;
+			dXWidth += std::rand() % 50 + 50;
+			xArr[5] = xWidth + dXWidth; yArr[5] = size.y + std::rand() % 80 - 210;
+			dXWidth += std::rand() % 50 + 50;
+			xArr[6] = xWidth + dXWidth; yArr[6] = size.y + std::rand() % 80 - 210;
+			dXWidth += std::rand() % 50 + 50;
+			xArr[7] = xWidth + dXWidth; yArr[7] = size.y + std::rand() % 80 - 210;
+			dXWidth += std::rand() % 50 + 50;
+			xArr[8] = xWidth + dXWidth; yArr[8] = size.y + std::rand() % 80 - 210;
+			dXWidth += std::rand() % 50 + 50;
+			xArr[9] = xWidth + dXWidth; yArr[9] = size.y - 250;			
 			spl.set_points(xArr, yArr);
 		}
-		float xPoint = float(k % 200) / 199 * dXWidth + xWidth;
-		ground.setPoint(k, sf::Vector2f(xPoint, spl(xPoint)));
+		double xPoint = double((k - 2) % 200) / 198 * dXWidth + xWidth;
+		double yPoint = spl(xPoint);
+		ground[k].position = sf::Vector2f(xPoint, size.y);
+		ground[k + 1].position = sf::Vector2f(xPoint, yPoint);
+
+		//ground[k].texCoords = sf::Vector2f(xPoint, 1024);
+		//ground[k + 1].texCoords = sf::Vector2f(xPoint, 1024 * yPoint / size.y);
+
+		ground[k].color = color;
+		ground[k + 1].color = color;
+
 	}
-	xWidth += std::rand() % 400 + 500;
-	ground.setPoint(count - 4, sf::Vector2f(xWidth, -250));
-	ground.setPoint(count - 3, sf::Vector2f(xWidth, 100000));
-	ground.setPoint(count - 2, sf::Vector2f(0, 100000));
-	ground.setPoint(count - 1, sf::Vector2f(0, -250));
-	ground.setPosition(0, size.y);
-	ground.setFillColor(sf::Color(100, 20, 70));
+	xWidth += std::rand() % 400 + 500 + dXWidth;
+	ground[count - 2].position = sf::Vector2f(xWidth, size.y);
+	ground[count - 1].position = sf::Vector2f(xWidth, size.y - 250);
+	//ground[count - 2].texCoords = sf::Vector2f(xWidth, 1024);
+	//ground[count - 1].texCoords = sf::Vector2f(xWidth, 1024 * (size.y - 250) / size.y);
+
+	ground[count - 2].color = color;
+	ground[count - 1].color = color;
+
+	left = 0;
+	right = xWidth;
 	for (int i = 0; i < count; ++i) {
-		std::cout << ground.getPoint(i).x << ' ' << ground.getPoint(i).y << std::endl;
+		std::cout << ground[i].position.x << ' ' << ground[i].position.y << std::endl;
 	}
-	std::cout << ground.getPointCount();
 }
 
-sf::ConvexShape Ground::getDrawable() {
+sf::VertexArray Ground::getDrawable() {
 	return this->ground;
+}
+
+int Ground::getLeft() {
+	return this->left;
+}
+
+int Ground::getRight() {
+	return this->right;
 }

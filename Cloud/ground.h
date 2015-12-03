@@ -7,9 +7,13 @@
 class Ground {
 public:
 	Ground(int count, sf::Vector2u size, int waterSize);
-	sf::ConvexShape getDrawable();
+	sf::VertexArray getDrawable();
+	int getLeft();
+	int getRight();
 private:
-	sf::ConvexShape ground;
+	sf::VertexArray ground;
+	int left;
+	int right;
 };
 
 #endif // GROUND_H

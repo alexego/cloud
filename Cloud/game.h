@@ -22,7 +22,9 @@ private:
 	std::vector<Cloud> clouds;
 	sf::View view;
 	sf::Sprite bg;
+	sf::Sprite water;
 	Ground ground;
+	sf::Texture groundText;
 	bool left;
 	bool right;
 	bool space;

@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game(sf::View VIEW, sf::Vector2u SIZE) : view(VIEW), ground(1004, SIZE, 5) {
+Game::Game(sf::View VIEW, sf::Vector2u SIZE) : view(VIEW), ground(2004, SIZE, 5) {
 	Cloud newCloud;
 	clouds.push_back(newCloud);
 	std::cout << clouds.size() << std::endl;
@@ -8,13 +8,18 @@ Game::Game(sf::View VIEW, sf::Vector2u SIZE) : view(VIEW), ground(1004, SIZE, 5)
 	left = false;
 	space = false;
 	speed = 1000;
+	groundText.create(1024, 1024);
+	groundText.loadFromFile("ground.jpg");
+	groundText.setRepeated(true);
+	
 }
 
 void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
+	//states.texture = &groundText;
 	states.texture = NULL;
-
 	target.draw(Ground(ground).getDrawable(), states);
+
 
 	for (int i = 0; i < clouds.size(); ++i) {
 		target.draw(Cloud(clouds[i]).getDrawable(), states);
@@ -44,19 +49,23 @@ sf::View Game::getViev() {
 }
 void Game::update(sf::Time elapsed) {
 	if (right) {
-		for (int i = 0; i < clouds.size(); ++i) {
-			Cloud& cl = clouds[i];
-			cl.move(speed * elapsed.asSeconds(), 0);
-			clouds[i] = cl;
+		if (view.getCenter().x + view.getSize().x/2 < ground.getRight() - 5) {
+			for (int i = 0; i < clouds.size(); ++i) {
+				Cloud& cl = clouds[i];
+				cl.move(speed * elapsed.asSeconds(), 0);
+				clouds[i] = cl;
+			}
+			view.move(speed * elapsed.asSeconds(), 0);
 		}
-		view.move(speed * elapsed.asSeconds(), 0);
 	}
 	if (left) {
-		for (int i = 0; i < clouds.size(); ++i) {
-			Cloud& cl = clouds[i];
-			cl.move(-speed * elapsed.asSeconds(), 0);
-			clouds[i] = cl;
+		if (view.getCenter().x - view.getSize().x / 2 > ground.getLeft() + 5) {
+			for (int i = 0; i < clouds.size(); ++i) {
+				Cloud& cl = clouds[i];
+				cl.move(-speed * elapsed.asSeconds(), 0);
+				clouds[i] = cl;
+			}
+			view.move(-speed * elapsed.asSeconds(), 0);
 		}
-		view.move(-speed * elapsed.asSeconds(), 0);
 	}
 }
