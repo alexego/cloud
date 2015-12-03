@@ -11,19 +11,27 @@ Game::Game(sf::View VIEW, sf::Vector2u SIZE) : view(VIEW), ground(2004, SIZE, 5)
 	groundText.create(1024, 1024);
 	groundText.loadFromFile("ground.jpg");
 	groundText.setRepeated(true);
-	
+
+	sf::Texture waterText;
+	waterText.create(ground.getRight(), SIZE.y - 250);
+	water.setTexture(waterText);
+	water.setColor(sf::Color(119, 221, 231));
+	water.setPosition(sf::Vector2f(0, SIZE.y - 250));
+
 }
 
 void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
-	//states.texture = &groundText;
 	states.texture = NULL;
-	target.draw(Ground(ground).getDrawable(), states);
 
 
 	for (int i = 0; i < clouds.size(); ++i) {
 		target.draw(Cloud(clouds[i]).getDrawable(), states);
 	}
+
+	target.draw(water, states);
+	//states.texture = &groundText;
+	target.draw(Ground(ground).getDrawable(), states);
 }
 
 void Game::rightTrue() {
