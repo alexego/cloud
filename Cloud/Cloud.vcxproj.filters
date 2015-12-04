@@ -46,5 +46,8 @@
     <Image Include="ground.jpg">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="cloud.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
 
 class Game : public sf::Drawable, public sf::Transformable {
 public:
-	Game(sf::View VIEW, sf::Vector2u SIZE);
+	Game(sf::View gameView, sf::Vector2u screenSize);
 
 	void rightTrue();
 	void leftTrue();
@@ -20,6 +20,7 @@ public:
 	void update(sf::Time elapsed);
 private:
 	std::vector<Cloud> clouds;
+	sf::Texture cloudText;
 	sf::View view;
 	sf::Sprite bg;
 	sf::Sprite water;
