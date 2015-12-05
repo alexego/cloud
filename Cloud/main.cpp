@@ -41,18 +41,14 @@ int main()
 					break;
 			}
 		}
-		//sf::Texture textu;
-		//textu.loadFromFile("cloud.png");
-		//Cloud cld(sf::Vector2f(500, 200), textu);
 		// update
 		sf::Time elapsed = clock.restart();
 		game.update(elapsed);
 
 		// draw
 		window.clear(sf::Color(127, 199, 255));
-		window.setView(game.getViev());
+		window.setView(game.getView());
 		window.draw(game);
-		//window.draw(cld);
 		window.display();
 	}
 

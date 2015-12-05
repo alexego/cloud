@@ -1,22 +1,6 @@
-﻿Сборка начата 04.12.2015 23:56:41.
+﻿Сборка начата 05.12.2015 12:32:20.
      1>Проект "E:\Projects\Cloud\Cloud\Cloud.vcxproj" в узле 2 (целевые объекты Build).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\SFML\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D SFML_DYNAMIC /D _MBCS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /FR"Debug\\" /Gd /TP /analyze- /errorReport:prompt cloud.cpp game.cpp main.cpp
-         game.cpp
-     1>e:\projects\cloud\cloud\game.cpp(7): warning C4244: аргумент: преобразование "unsigned int" в "float", возможна потеря данных
-     1>e:\projects\cloud\cloud\game.cpp(22): warning C4244: аргумент: преобразование "unsigned int" в "float", возможна потеря данных
-     1>e:\projects\cloud\cloud\game.cpp(30): warning C4018: <: несоответствие типов со знаком и без знака
-     1>e:\projects\cloud\cloud\game.cpp(68): warning C4018: <: несоответствие типов со знаком и без знака
-     1>e:\projects\cloud\cloud\game.cpp(80): warning C4018: <: несоответствие типов со знаком и без знака
-         cloud.cpp
-     1>e:\projects\cloud\cloud\cloud.cpp(4): warning C4244: аргумент: преобразование "unsigned int" в "float", возможна потеря данных
-     1>e:\projects\cloud\cloud\cloud.cpp(5): warning C4305: аргумент: усечение из "double" к "float"
-     1>e:\projects\cloud\cloud\cloud.cpp(32): warning C4244: return: преобразование "float" в "int", возможна потеря данных
-         Создание кода...
-         Компиляция...
-         main.cpp
-         Создание кода...
-       Link:
+     1>Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Projects\Cloud\Debug\Cloud.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\SFML\lib "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" "sfml-audio-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\Projects\Cloud\Debug\Cloud.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Projects\Cloud\Debug\Cloud.lib" /MACHINE:X86 Debug\cloud.obj
          Debug\game.obj
          Debug\ground.obj
@@ -28,4 +12,4 @@
 
 Сборка успешно завершена.
 
-Затраченное время: 00:00:03.68
+Затраченное время: 00:00:01.09

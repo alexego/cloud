@@ -3,12 +3,28 @@
 #include <vector>
 
 Ground::Ground(int count, sf::Vector2u screen, int groundHight) : ground(sf::TrianglesStrip, count) {
+	//Ширина игрового поля
 	double xWidth = 0;
+	//Изменение ширины игрового поля
 	double dXWidth = 0;
 	sf::Color color(168, 94, 47);
+	//Массивы контрольных точек для постороения сплайна
 	std::vector<double> xArr(10), yArr(10);
 	tk::spline spl;
-	int textRepeat = 0;
+
+	// 1: задаются две первые первые точки на нижнем уровне и на уровне земли (groundHight)
+	// 2: каждые 200 (частота интерполяции 200 / 2) точек задаются 10 контрольных точек
+	//    ___________              ______________
+	//               \__        __/
+	//                  \    __/  
+	//                   \__/
+	//
+	//    _______________________________________
+	//
+	// 3: кривая из 10 контрольных точек интерполируется кубическим сплайном на 100 точек
+	// 4: добавляются две последние точки
+	// 5: каждые 200 точек задается область земли
+
 	ground[0].position = sf::Vector2f(0, screen.y);
 	ground[1].position = sf::Vector2f(0, groundHight);
 	ground[0].color = color;
@@ -68,11 +84,6 @@ Ground::Ground(int count, sf::Vector2u screen, int groundHight) : ground(sf::Tri
 	right = xWidth;
 
 	checkGround.push_back(CheckGround(ground[count - 3].position.x, ground[count - 2].position.x));
-
-	for (int i = 0; i < checkGround.size(); ++i) {
-		std::cout << checkGround[i].begin << ' ' << checkGround[i].end << std::endl;
-	}
-	std::cout << left << ' ' << right << std::endl;
 }
 
 sf::VertexArray Ground::getDrawable() {
