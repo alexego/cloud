@@ -79,16 +79,19 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="ground.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\spline.h" />
     <ClInclude Include="cloud.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="ground.h" />
+    <ClInclude Include="tree.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="cloud.png" />
     <Image Include="ground.jpg" />
+    <Image Include="tree.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="arial.ttf" />

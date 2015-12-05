@@ -4,6 +4,7 @@
 #include <vector>
 #include "cloud.h"
 #include "ground.h"
+#include "tree.h"
 #include <iostream>
 #include <sstream>
 
@@ -45,6 +46,9 @@ private:
 	sf::Texture groundText;
 	sf::Font font;
 	sf::Text text;
+
+	std::vector<Tree> trees;
+	sf::Texture treeText;
 
 	std::ostringstream plrStr;
 	

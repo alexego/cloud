@@ -12,6 +12,7 @@
 //    clouds - через положение центра, текстуру и размеров текстуры
 //    water - чере текстуру и координаты/размер
 //[следует вообще все используемые константы и выражения типа "screenSize.y - screenSize.y / 3" передавать как параметр]
+//    trees - 
 Game::Game(sf::View gameView, sf::Vector2u screenSize) : view(gameView), ground(2004, screenSize, screenSize.y - screenSize.y/3),text("", font, 20) {
 	cloudText.create(541, 171);
 	cloudText.loadFromFile("cloud.png");
@@ -31,8 +32,17 @@ Game::Game(sf::View gameView, sf::Vector2u screenSize) : view(gameView), ground(
 	text.setPosition(10, 10);
 	
 	font.loadFromFile("arial.ttf");
-	
-
+	treeText.loadFromFile("tree.png");
+	int treePos = 0;	
+	for (int i = 0; i < 5;) {
+		treePos += rand() % 200 + 100;
+		if (ground.isGround(sf::Vector2f(treePos, screenSize.y - screenSize.y / 3))) {
+			++i;
+			Tree tree(treeText, treeText.getSize(), sf::Vector2f(treePos, screenSize.y - screenSize.y / 3));
+			trees.push_back(tree);
+		}
+		if (treePos >= ground.getRight()) treePos = 0;
+	}
 
 	sf::Texture waterText;
 	waterText.create(ground.getRight(), screenSize.y - screenSize.y / 3);
@@ -47,6 +57,9 @@ void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 	for (int i = 0; i < clouds.size(); ++i) {
 		target.draw(Cloud(clouds[i]).getDrawable(), states);
+	}
+	for (int i = 0; i < trees.size(); ++i) {
+		target.draw(Tree(trees[i]).getDrawable(), states);
 	}
 
 	target.draw(water, states);

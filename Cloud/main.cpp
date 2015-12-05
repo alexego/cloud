@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 
-#include "cloud.h"
 #include "game.h"
 
 int main()
