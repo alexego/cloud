@@ -1,4 +1,5 @@
 #include "game.h"
+#include <string.h>
 
 //В конструкторе задается:
 //    view - через view основного окна
@@ -11,7 +12,7 @@
 //    clouds - через положение центра, текстуру и размеров текстуры
 //    water - чере текстуру и координаты/размер
 //[следует вообще все используемые константы и выражения типа "screenSize.y - screenSize.y / 3" передавать как параметр]
-Game::Game(sf::View gameView, sf::Vector2u screenSize) : view(gameView), ground(2004, screenSize, screenSize.y - screenSize.y/3) {
+Game::Game(sf::View gameView, sf::Vector2u screenSize) : view(gameView), ground(2004, screenSize, screenSize.y - screenSize.y/3),text("", font, 20) {
 	cloudText.create(541, 171);
 	cloudText.loadFromFile("cloud.png");
 	cloudText.setSmooth(true);
@@ -22,9 +23,16 @@ Game::Game(sf::View gameView, sf::Vector2u screenSize) : view(gameView), ground(
 	left = false;
 	space = false;
 	speed = 1000;
+	esc = false;
 	//groundText.create(1024, 1024);
 	//groundText.loadFromFile("ground.jpg");
 	//groundText.setRepeated(true);
+
+	text.setPosition(10, 10);
+	
+	font.loadFromFile("arial.ttf");
+	
+
 
 	sf::Texture waterText;
 	waterText.create(ground.getRight(), screenSize.y - screenSize.y / 3);
@@ -44,6 +52,8 @@ void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(water, states);
 	//states.texture = &groundText;
 	target.draw(Ground(ground).getDrawable(), states);
+
+	target.draw(text, states);
 }
 
 void Game::rightTrue() {
@@ -70,39 +80,43 @@ sf::View Game::getView() {
 }
 
 void Game::update(sf::Time elapsed) {
-	if (right) {
-		if (view.getCenter().x + view.getSize().x / 2 < ground.getRight() - 5 && clouds[0].getPosition().x >= view.getCenter().x - 5) {
-			view.move(speed * elapsed.asSeconds(), 0);
-		}
-		if (clouds[0].getRight() < ground.getRight() - 6) {
-			for (int i = 0; i < clouds.size(); ++i) {
-				clouds[i].move(speed * elapsed.asSeconds(), 0);
-				//Раньше это делалось так:
-				//Cloud& cl = clouds[i];
-				//cl.move(speed * elapsed.asSeconds(), 0);
-				//clouds[i] = cl;
-				//Лучше оставить, вдруг в g++ не подейт этот вариант
+	if (!esc) {
+		if (right) {
+			if (view.getCenter().x + view.getSize().x / 2 < ground.getRight() - 5 && clouds[0].getPosition().x >= view.getCenter().x - 5) {
+				view.move(speed * elapsed.asSeconds(), 0);
+			}
+			if (clouds[0].getRight() < ground.getRight() - 6) {
+				for (int i = 0; i < clouds.size(); ++i) {
+					clouds[i].move(speed * elapsed.asSeconds(), 0);
+					//Раньше это делалось так:
+					//Cloud& cl = clouds[i];
+					//cl.move(speed * elapsed.asSeconds(), 0);
+					//clouds[i] = cl;
+					//Лучше оставить, вдруг в g++ не подейт этот вариант
+				}
 			}
 		}
-	}
-	if (left) {
-		if (view.getCenter().x - view.getSize().x / 2 > ground.getLeft() + 5 && clouds[0].getPosition().x <= view.getCenter().x + 5) {
-			view.move(-speed * elapsed.asSeconds(), 0);
-		}
-		if (clouds[0].getLeft() > ground.getLeft() + 6) {
-			for (int i = 0; i < clouds.size(); ++i) {
-				clouds[i].move(-speed * elapsed.asSeconds(), 0);
+		if (left) {
+			if (view.getCenter().x - view.getSize().x / 2 > ground.getLeft() + 5 && clouds[0].getPosition().x <= view.getCenter().x + 5) {
+				view.move(-speed * elapsed.asSeconds(), 0);
+			}
+			if (clouds[0].getLeft() > ground.getLeft() + 6) {
+				for (int i = 0; i < clouds.size(); ++i) {
+					clouds[i].move(-speed * elapsed.asSeconds(), 0);
+				}
 			}
 		}
-	}
 
-	//std::cout << ground.isGround(clouds[0].getPosition());	
-	
-	if (ground.isGround(clouds[0].getPosition())) {
-		clouds[0].hpIterator(-elapsed.asSeconds());
-	} else {
-		clouds[0].hpIterator(elapsed.asSeconds());
-	}
+		//std::cout << ground.isGround(clouds[0].getPosition());	
 
-	//std::cout << clouds[0].getHP() << std::endl;
+		if (ground.isGround(clouds[0].getPosition())) {
+			clouds[0].hpIterator(-elapsed.asSeconds());
+		}
+		else {
+			clouds[0].hpIterator(elapsed.asSeconds());
+		}
+	}
+	text.setPosition(sf::Vector2f(view.getCenter().x - 500, 0));
+	text.setString(std::to_string(clouds[0].getHP()));
+	std::cout << 1.f/elapsed.asSeconds() << std::endl;
 }

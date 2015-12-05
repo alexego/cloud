@@ -5,6 +5,7 @@
 #include "cloud.h"
 #include "ground.h"
 #include <iostream>
+#include <sstream>
 
 //Основной игровой класс
 class Game : public sf::Drawable, public sf::Transformable {
@@ -42,10 +43,18 @@ private:
 	Ground ground;
 	//Текстура земли [не используется, код закомментирован]
 	sf::Texture groundText;
+	sf::Font font;
+	sf::Text text;
+
+	std::ostringstream plrStr;
+	
+
+
 	//Отвечающие за ввод логические переменные
 	bool left;
 	bool right;
 	bool space;
+	bool esc;
 
 	//Перегруженная функция класса sf::Drawable
 	//Либо отрисовывает каждый объект, если у него перегружен этот же метод
