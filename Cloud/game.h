@@ -6,7 +6,7 @@
 #include "ground.h"
 #include "tree.h"
 #include <iostream>
-#include <sstream>
+
 
 //Основной игровой класс
 class Game : public sf::Drawable, public sf::Transformable {
@@ -42,7 +42,7 @@ private:
 	sf::Sprite water;
 	//Земля
 	Ground ground;
-	//Текстура земли [не используется, код закомментирован]
+	//Текстура земли
 	sf::Texture groundText;
 	sf::Font font;
 	sf::Text text;
@@ -50,7 +50,7 @@ private:
 	std::vector<Tree> trees;
 	sf::Texture treeText;
 
-	std::ostringstream plrStr;
+	
 	
 
 

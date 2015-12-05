@@ -13,7 +13,7 @@ Ground::Ground(int count, sf::Vector2u screen, int groundHight) : ground(sf::Tri
 	tk::spline spl;
 
 	// 1: задаются две первые первые точки на нижнем уровне и на уровне земли (groundHight)
-	// 2: каждые 200 (частота интерполяции 200 / 2) точек задаются 10 контрольных точек
+	// 2: каждые 200 (частота интерполяции 200 / 2) точек задаются 10 контрольных точек, пример:
 	//    ___________              ______________
 	//               \__        __/
 	//                  \    __/  
@@ -24,11 +24,12 @@ Ground::Ground(int count, sf::Vector2u screen, int groundHight) : ground(sf::Tri
 	// 3: кривая из 10 контрольных точек интерполируется кубическим сплайном на 100 точек
 	// 4: добавляются две последние точки
 	// 5: каждые 200 точек задается область земли
+	// [можно сделать рандомное кол-во точек, но как-то лень]
 
 	ground[0].position = sf::Vector2f(0, screen.y);
 	ground[1].position = sf::Vector2f(0, groundHight);
-	ground[0].color = color;
-	ground[1].color = color;
+	//ground[0].color = color;
+	//ground[1].color = color;
 	for (int k = 2; k < count - 2; k += 2) {
 		if ((k-2) % 200 == 0) {
 			xWidth += std::rand() % 400 + 500 + dXWidth;
@@ -59,11 +60,11 @@ Ground::Ground(int count, sf::Vector2u screen, int groundHight) : ground(sf::Tri
 		ground[k].position = sf::Vector2f(xPoint, screen.y);
 		ground[k + 1].position = sf::Vector2f(xPoint, yPoint);
 
-		//ground[k].texCoords = sf::Vector2f(xPoint, 1024);
-		//ground[k + 1].texCoords = sf::Vector2f(xPoint, 1024 * yPoint / screen.y);
+		ground[k].texCoords = sf::Vector2f(xPoint, 511);
+		ground[k + 1].texCoords = sf::Vector2f(xPoint, 511 * (yPoint - groundHight) / (screen.y - groundHight));
 
-		ground[k].color = color;
-		ground[k + 1].color = color;
+		//ground[k].color = color;
+		//ground[k + 1].color = color;
 
 		if ((k - 2) % 200 == 0) {
 			checkGround.push_back(CheckGround(ground[k - 1].position.x, ground[k].position.x));
@@ -72,13 +73,13 @@ Ground::Ground(int count, sf::Vector2u screen, int groundHight) : ground(sf::Tri
 	xWidth += std::rand() % 400 + 500 + dXWidth;
 	ground[count - 2].position = sf::Vector2f(xWidth, screen.y);
 	ground[count - 1].position = sf::Vector2f(xWidth, groundHight);
-	ground[count - 2].color = color;
-	ground[count - 1].color = color;
+	//ground[count - 2].color = color;
+	//ground[count - 1].color = color;
 
-	//ground[0].texCoords = sf::Vector2f(0, 1024);
-	//ground[1].texCoords = sf::Vector2f(0, 1024 * (screen.y - 250) / screen.y);
-	//ground[count - 2].texCoords = sf::Vector2f(xWidth, 1024);
-	//ground[count - 1].texCoords = sf::Vector2f(xWidth, 1024 * (screen.y - 250) / screen.y);
+	ground[0].texCoords = sf::Vector2f(0, 511);
+	ground[1].texCoords = sf::Vector2f(0, 0);
+	ground[count - 2].texCoords = sf::Vector2f(xWidth, 511);
+	ground[count - 1].texCoords = sf::Vector2f(xWidth, 0);
 
 	left = 0;
 	right = xWidth;
@@ -91,11 +92,11 @@ sf::VertexArray Ground::getDrawable() {
 }
 
 int Ground::getLeft() {
-	return this->left;
+	return this->left + 5;
 }
 
 int Ground::getRight() {
-	return this->right;
+	return this->right - 5;
 }
 
 bool Ground::isGround(sf::Vector2f pos) {

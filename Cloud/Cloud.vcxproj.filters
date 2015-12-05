@@ -49,13 +49,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="ground.jpg">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
     <Image Include="cloud.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="tree.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="groundgrass.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>

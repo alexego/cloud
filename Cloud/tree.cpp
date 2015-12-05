@@ -2,10 +2,10 @@
 
 Tree::Tree(sf::Texture& text, sf::Vector2u size, sf::Vector2f pos) : tree(text), hp(100.0f) {
 	tree.setOrigin(sf::Vector2f(size.x / 2, size.y));
-	tree.setScale(0.1, 0.1);
+	tree.setScale(0.2, 0.2);
 	tree.setPosition(pos);
 	treeSize = size;
-	std::cout << tree.getPosition().x << ' ' << tree.getPosition().y << std::endl;
+	std::cout << size.x * tree.getScale().x << ' ' << tree.getPosition().y << std::endl;
 }
 
 sf::Sprite Tree::getDrawable() {
