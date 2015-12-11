@@ -28,6 +28,10 @@ float Cloud::getLeft() {
 	return cloud.getPosition().x - cloudSize.x * cloud.getScale().x / 2;
 }
 
+float Cloud::getBottom() {
+	return cloud.getPosition().y + cloudSize.y * cloud.getScale().y / 2;
+}
+
 int Cloud::getHP() {
 	return hp;
 }

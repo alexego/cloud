@@ -12,17 +12,21 @@
 //    water - через текстуру и координаты/размер
 //[следует вообще все используемые константы и выражени€ типа "screenSize.y - screenSize.y / 3" передавать как параметр]
 //    trees - 
-Game::Game(sf::View gameView, sf::Vector2u screenSize) : view(gameView), ground(2004, screenSize, screenSize.y - screenSize.y/3),text("", font, 20) {
+Game::Game(sf::View gameView, sf::Vector2u screenSize) : 
+			view(gameView), ground(2004, screenSize, screenSize.y - screenSize.y/3),
+			text("", font, 20), rain(0.07, 500, screenSize.y - screenSize.y / 3) {
 	cloudText.create(541, 171);
 	cloudText.loadFromFile("cloud.png");
 	cloudText.setSmooth(true);
 	Cloud newCloud(sf::Vector2f(screenSize.x / 2, screenSize.y / 4), cloudText, cloudText.getSize());
 	clouds.push_back(newCloud);
 
+	std::cout << screenSize.y - screenSize.y / 3;
+
 	right = false;
 	left = false;
 	space = false;
-	speed = 1000;
+	speed = 100;
 	esc = false;
 	groundText.create(2648, 511);
 	groundText.loadFromFile("groundgrass.png");
@@ -53,20 +57,30 @@ Game::Game(sf::View gameView, sf::Vector2u screenSize) : view(gameView), ground(
 	water.setTexture(waterText);
 	water.setColor(sf::Color(0, 127, 255));
 	water.setPosition(sf::Vector2f(0, screenSize.y - screenSize.y / 3));
+
+	rain.setArea(clouds[0].getRight() - clouds[0].getLeft());
+	rain.setEmitter(sf::Vector2f(clouds[0].getRight(), clouds[0].getBottom()));
+	//rain.setStart();
 }
 
 void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	states.texture = NULL;
 
-	for (int i = 0; i < clouds.size(); ++i) {
-		target.draw(Cloud(clouds[i]).getDrawable(), states);
-	}
+
 	for (int i = 0; i < trees.size(); ++i) {
 		target.draw(Tree(trees[i]).getDrawable(), states);
 	}
 
 	target.draw(water, states);
+
+
+	target.draw(rain, states);
+
+	for (int i = 0; i < clouds.size(); ++i) {
+		target.draw(Cloud(clouds[i]).getDrawable(), states);
+	}
+
 	target.draw(text, states);
 
 	states.texture = &groundText;
@@ -98,6 +112,7 @@ sf::View Game::getView() {
 
 void Game::update(sf::Time elapsed) {
 	if (!esc) {
+		//ƒвижение влево и вправо
 		if (right) {
 			if (view.getCenter().x + view.getSize().x / 2 < ground.getRight() - 5 && clouds[0].getPosition().x >= view.getCenter().x - 5) {
 				view.move(speed * elapsed.asSeconds(), 0);
@@ -123,17 +138,26 @@ void Game::update(sf::Time elapsed) {
 				}
 			}
 		}
+		//Ќажатие пробела
+		rain.setArea(clouds[0].getRight() - clouds[0].getLeft());
+		rain.setEmitter(sf::Vector2f(clouds[0].getRight(), clouds[0].getBottom()));
+		if (space) {
+			rain.emit(elapsed);
+			clouds[0].hpIterator(-0.035);
+		} else {
+			rain.noemit(elapsed);
+		}
 
-		//std::cout << ground.isGround(clouds[0].getPosition());	
-
+		//¬ывод информации
 		if (ground.isGround(clouds[0].getPosition())) {
 			clouds[0].hpIterator(-elapsed.asSeconds());
 		}
 		else {
 			clouds[0].hpIterator(elapsed.asSeconds());
 		}
+		text.setPosition(sf::Vector2f(view.getCenter().x - 500, 0));
+		text.setString(std::to_string(clouds[0].getHP()));
 	}
-	text.setPosition(sf::Vector2f(view.getCenter().x - 500, 0));
-	text.setString(std::to_string(clouds[0].getHP()));
-	//std::cout << 1.f/elapsed.asSeconds() << std::endl;
+
+	//std::cout << rain.size() << std::endl;
 }

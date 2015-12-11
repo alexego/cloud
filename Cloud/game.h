@@ -5,6 +5,7 @@
 #include "cloud.h"
 #include "ground.h"
 #include "tree.h"
+#include "rain.h"
 #include <iostream>
 
 
@@ -50,7 +51,7 @@ private:
 	std::vector<Tree> trees;
 	sf::Texture treeText;
 
-	
+	Rain rain;
 	
 
 

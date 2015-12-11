@@ -15,6 +15,7 @@ public:
 	//Правая и левая границы отображаемого спрайта
 	float getRight();
 	float getLeft();
+	float getBottom();
 	//Получить хп
 	int getHP();
 	//Изменить хп [и положение облака]
