@@ -5,6 +5,8 @@
 #include "cloud.h"
 #include "ground.h"
 #include "tree.h"
+#include "man.h"
+#include "menu.h"
 #include "rain.h"
 #include <iostream>
 
@@ -22,6 +24,7 @@ public:
 	void rightFalse();
 	void leftFalse();
 	void spaceFalse();
+	void escChange();
 	sf::View getView();
 
 	//Update - движение и изменение параметров при необходимых услови€х
@@ -53,6 +56,15 @@ private:
 
 	Rain rain;
 	
+
+
+	//вектор роботов, картинка дл€ анимации
+	std::vector<Man> humans;
+	sf::Image manImage;
+	sf::Texture manText;
+	int man_speed;
+
+	//Menu pause;
 
 
 	//ќтвечающие за ввод логические переменные

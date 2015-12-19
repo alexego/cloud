@@ -79,6 +79,8 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="ground.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="man.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="rain.cpp" />
     <ClCompile Include="tree.cpp" />
   </ItemGroup>
@@ -87,6 +89,8 @@
     <ClInclude Include="cloud.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="ground.h" />
+    <ClInclude Include="man.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="rain.h" />
     <ClInclude Include="tree.h" />
   </ItemGroup>

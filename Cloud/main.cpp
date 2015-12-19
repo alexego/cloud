@@ -8,6 +8,7 @@ int main()
 	settings.antialiasingLevel = 8;
 	sf::RenderWindow window(sf::VideoMode(1024, 576), "Cloud", sf::Style::Default, settings);
 	window.setMouseCursorVisible(false);
+	//window.setFramerateLimit(60);
 	Game game(window.getView(), window.getSize());
 	// create a clock to track the elapsed time
 	sf::Clock clock;
@@ -43,6 +44,9 @@ int main()
 					break;
 				case sf::Keyboard::Space:
 					game.spaceFalse();
+					break;
+				case sf::Keyboard::Escape:
+					game.escChange();
 					break;
 			}
 		}

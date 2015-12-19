@@ -37,9 +37,5 @@ int Cloud::getHP() {
 }
 
 void Cloud::hpIterator(float elapsed) {
-	if (elapsed > 0) {
-		hp += elapsed*4;
-		return;
-	}
 	hp += elapsed;
 }

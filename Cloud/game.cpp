@@ -1,4 +1,5 @@
 #include "game.h"
+#include <cmath>
 
 //В конструкторе задается:
 //    view - через view основного окна
@@ -27,6 +28,7 @@ Game::Game(sf::View gameView, sf::Vector2u screenSize) :
 	left = false;
 	space = false;
 	speed = 100;
+	man_speed = 100;
 	esc = false;
 	groundText.create(2648, 511);
 	groundText.loadFromFile("groundgrass.png");
@@ -51,6 +53,27 @@ Game::Game(sf::View gameView, sf::Vector2u screenSize) :
 		}
 		if (treePos >= ground.getRight()) treePos = 0;
 	}
+
+
+	//генерация людей на уровень
+	manImage.loadFromFile("man.jpg");
+	manImage.createMaskFromColor(sf::Color(255, 255, 255));
+	manText.loadFromImage(manImage);
+	manText.setSmooth(1);
+	//manText.setSmooth(true);
+	int manPos = 0;
+	for (int i = 0; i < 10;) {
+		manPos += rand() % 200 + 80;
+		if (ground.isGround(sf::Vector2f(manPos - 64.0f, screenSize.y - screenSize.y / 3)) &&
+			ground.isGround(sf::Vector2f(manPos + 64.0f, screenSize.y - screenSize.y / 3))) {
+			++i;//вручную выбираем размер спрайта 64х64, +6 для создания видимости, что роботы ходят по травке
+			Man man(manText, sf::Vector2u(64, 64), sf::Vector2f(manPos, screenSize.y - screenSize.y / 3 + 6));
+			humans.push_back(man);
+		}
+		if (manPos >= ground.getRight()) manPos = 0;
+	}
+
+
 
 	sf::Texture waterText;
 	waterText.create(ground.getRight(), screenSize.y - screenSize.y / 3);
@@ -85,6 +108,11 @@ void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 	states.texture = &groundText;
 	target.draw(Ground(ground).getDrawable(), states);
+
+	for (int i = 0; i < humans.size(); ++i) {
+		target.draw(Man(humans[i]).getDrawable(), states);
+	}
+
 }
 
 void Game::rightTrue() {
@@ -104,6 +132,10 @@ void Game::leftFalse() {
 }
 void Game::spaceFalse() {
 	this->space = false;
+}
+
+void Game::escChange() {
+	this->esc = !this->esc;
 }
 
 sf::View Game::getView() {
@@ -148,12 +180,35 @@ void Game::update(sf::Time elapsed) {
 			rain.noemit(elapsed);
 		}
 
+		for (int i = 0; i < humans.size(); ++i)
+		{
+			if (humans[i].getLeft() < 2)
+			{
+				humans[i].Destination = abs(humans[i].Redirect());
+				humans[i].move(man_speed * elapsed.asSeconds(), 0);
+				std::cout << "Edge! ";
+			}
+
+			if (!ground.isGround(sf::Vector2f(humans[i].getLeft(), 2 / 3 * 576)) ||
+				!ground.isGround(sf::Vector2f(humans[i].getRight(), 2 / 3 * 576)))//если трется у границ воды - повторный редирект
+			{
+				humans[i].move(humans[i].Destination * -man_speed * elapsed.asSeconds(), 0); //компенсируем перемещение за этот тик
+				humans[i].Destination = -humans[i].Destination; //разворачиваем робота
+				std::cout << "NO! ";
+			}
+
+			humans[i].move(humans[i].Redirect() * man_speed * elapsed.asSeconds(), 0);
+			humans[i].Animate(elapsed.asSeconds());
+			//проверка на положение роботов (нельзя на воду и за края карты)
+
+		}
+
 		//Вывод информации
 		if (ground.isGround(clouds[0].getPosition())) {
 			clouds[0].hpIterator(-elapsed.asSeconds());
 		}
 		else {
-			clouds[0].hpIterator(elapsed.asSeconds());
+			clouds[0].hpIterator(10 * elapsed.asSeconds());
 		}
 		text.setPosition(sf::Vector2f(view.getCenter().x - 500, 0));
 		text.setString(std::to_string(clouds[0].getHP()));
