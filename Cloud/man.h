@@ -2,6 +2,7 @@
 #define MAN_H
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "manstrategy.h"
 
 class Man : public sf::Transformable {
 public:
@@ -35,6 +36,7 @@ private:
 	sf::Vector2u manSize; //размеры спрайта
 	float hp;
 	float animateTime;
+	ManStrategy* strategy;
 
 };
 

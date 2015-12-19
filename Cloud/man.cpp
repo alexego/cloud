@@ -10,6 +10,13 @@ animateTime(0)
 	man.setScale(0.8, 0.8);
 	man.setPosition(pos);
 	manSize = size;
+	
+	int currentStrategy = rand() % 4;
+	if (currentStrategy) {
+		strategy = new ManStrategyAlive;
+	} else {
+		strategy = new ManStrategyDead;
+	}
 	//std::cout << size.x * man.getScale().x << ' ' << man.getPosition().y << std::endl;
 }
 
@@ -51,10 +58,10 @@ int Man::Redirect() {
 	//вероятность изменения состояния
 	if (a >= 499)
 	{
-		while (oldDest == Destination) //пока не сменится направление
-		{
-			Destination = rand() % 3 - 1; //-1, 0 или 1
-		}
+		//while (oldDest == Destination) //пока не сменится направление
+		//{
+			Destination = strategy->operator()(); //-1, 0 или 1
+		//}
 		CurrFrame = 0;
 	}
 	return Destination;

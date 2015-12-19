@@ -39,6 +39,9 @@
     <ClCompile Include="man.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="manstrategy.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cloud.h">
@@ -63,6 +66,9 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="man.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="manstrategy.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

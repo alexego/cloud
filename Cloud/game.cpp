@@ -27,7 +27,7 @@ Game::Game(sf::View gameView, sf::Vector2u screenSize) :
 	right = false;
 	left = false;
 	space = false;
-	speed = 100;
+	speed = 1000;
 	man_speed = 100;
 	esc = false;
 	groundText.create(2648, 511);
